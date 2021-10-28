@@ -231,62 +231,129 @@
 
 
 
-//// 二叉树
-//#include <iostream>
-//#include <vector>
-//
-//int nodeTree;
-//
-//struct BINode {
-//    int data;
-//    BINode *lChild, *rChild;
-//    BINode():data(0),lChild(nullptr),rChild(nullptr){}
-//};
-//
-//BINode* createBITree(std::vector<int> a){
-//    BINode *T = new BINode;
-//    nodeTree++;
-//    if(nodeTree > a.size()-1){
-//        return nullptr;
-//    }
-//    T->data = a[nodeTree];
-//    T->lChild = createBITree(a);
-//    T->rChild = createBITree(a);
-//    return  T;
-//}
-//
-//void preOrderTraverse(BINode *T){
-//    if(T){
-//        std::cout << T->data << "  ";
-//        preOrderTraverse(T->lChild);
-//        preOrderTraverse(T->rChild);
-//    }
-//}
-//
-//void inOrderTraverse(BINode *T){
-//    if(T){
-//        inOrderTraverse(T->lChild);
-//        std::cout << T->data << "  ";
-//        inOrderTraverse(T->rChild);
-//    }
-//}
-//
-//void postOrderTraverse(BINode *T){
-//    if(T){
-//        postOrderTraverse(T->lChild);
-//        std::cout << T->data << "  ";
-//        postOrderTraverse(T->rChild);
-//    }
-//}
-//
-//
-//int main(){
-//    nodeTree = -1;
-//    std::vector<int> arr ={1,2,3,4,5,6,7,8};
-//    BINode *T = createBITree(arr);
-//    preOrderTraverse(T);
-//    std::cout << std::endl;
-//    inOrderTraverse(T);
-//    std::cout << std::endl;
-//    postOrderTraverse(T);
-//}
+// 二叉树
+#include <iostream>
+#include <vector>
+
+int nodeTree;
+
+struct BINode {
+    int data;
+    BINode *lChild, *rChild;
+    BINode():data(0),lChild(nullptr),rChild(nullptr){}
+};
+
+BINode* createBITree(std::vector<int> a){
+    BINode *T = new BINode;
+    nodeTree++;
+    if(nodeTree > a.size()-1){
+        return nullptr;
+    }
+    T->data = a[nodeTree];
+    T->lChild = createBITree(a);
+    T->rChild = createBITree(a);
+    return  T;
+}
+
+void preOrderTraverse(BINode *T){
+    if(T){
+        std::cout << T->data << "  ";
+        preOrderTraverse(T->lChild);
+        preOrderTraverse(T->rChild);
+    }
+}
+
+void inOrderTraverse(BINode *T){
+    if(T){
+        inOrderTraverse(T->lChild);
+        std::cout << T->data << "  ";
+        inOrderTraverse(T->rChild);
+    }
+}
+
+void postOrderTraverse(BINode *T){
+    if(T){
+        postOrderTraverse(T->lChild);
+        std::cout << T->data << "  ";
+        postOrderTraverse(T->rChild);
+    }
+}
+
+void destoryBTTree(BINode* &BT){
+    if(BT != nullptr){
+        destoryBTTree(BT->lChild);
+        destoryBTTree(BT->rChild);
+        free(BT);
+        BT=nullptr;
+    }
+}
+
+//查找节点
+BINode* findBTNode(BINode* &BT, int data){
+    if(BT == nullptr){
+        return nullptr;
+    }
+    else if(BT->data == data){
+        std::cout << "存在该节点: " << data << std::endl;
+        return BT;
+    }
+    else{
+        BINode* p;
+        p = findBTNode(BT->lChild, data);
+        if(p!=nullptr){
+            return p;
+        }else
+        {
+            return findBTNode(BT->rChild, data);
+        }
+    }
+}
+
+//求二叉树的高度
+int BTHeight(BINode* &BT){
+    int lChild;
+    int rChild;
+    int h;
+    if(BT == nullptr){
+        return 0;
+    }
+    else
+    {
+        lChild = BTHeight(BT->lChild);
+        rChild = BTHeight(BT->rChild);
+        h = (lChild > rChild)?(lChild + 1):(rChild +1);
+        return h;
+    }
+}
+
+//输出二叉树
+void displayBTNode(BINode *&BT){
+    if(BT != nullptr){
+        std::cout << BT->data << " ";
+        if(BT->lChild != nullptr || BT->rChild != nullptr){
+            displayBTNode(BT->lChild);
+            displayBTNode(BT->rChild);
+        }
+    }
+}
+
+
+int main(){
+    nodeTree = -1;
+    std::vector<int> arr ={1,2,3,4,5,6,7,8};
+    BINode *T = createBITree(arr);
+    preOrderTraverse(T);
+    std::cout << std::endl;
+    inOrderTraverse(T);
+    std::cout << std::endl;
+    postOrderTraverse(T);
+    std::cout << std::endl;
+    
+    findBTNode(T, 5);
+    
+    int BTtreeHeight = BTHeight(T);
+    std::cout << "the BT tree height is: " << BTtreeHeight << std::endl;
+    displayBTNode(T);
+//    destoryBTTree(T);
+    
+}
