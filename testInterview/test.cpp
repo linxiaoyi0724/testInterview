@@ -27,3 +27,19 @@
 //    std::cout << "foo: "<< foo << std::endl;
 //    std::cout << "bar: "<< bar << std::endl;
 //}
+
+
+
+struct ListNode {
+    int data;
+    ListNode* next;
+    ListNode():data(0),next(nullptr){};
+};
+
+
+
+
+
+int main(){
+    
+}
